@@ -1,0 +1,4 @@
+pip-tools
+psutil
+schedule
+slack_sdk
