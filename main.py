@@ -9,15 +9,16 @@ from slack_sdk import WebClient
 
 # TODO: add a sane run arguments help and a corresponding library.
 
-token = os.environ.get('SLACK_BOT_TOKEN')
-if not token:
-    print("Please set SLACK_BOT_TOKEN env variable.")
-    sys.exit(1)
+if not os.environ.get('DRYRUN'):
+    token = os.environ.get('SLACK_BOT_TOKEN')
+    if not token:
+        print("Please set SLACK_BOT_TOKEN env variable.")
+        sys.exit(1)
 
-slack_channel = os.environ.get('SLACK_CHANNEL')
-if not slack_channel:
-    print("Please set SLACK_CHANNEL env variable.")
-    sys.exit(1)
+    slack_channel = os.environ.get('SLACK_CHANNEL')
+    if not slack_channel:
+        print("Please set SLACK_CHANNEL env variable.")
+        sys.exit(1)
 
 space_limit = os.environ.get('SPACE_LIMIT')
 if not space_limit:
@@ -44,17 +45,13 @@ space_limit = int(space_limit)
 check_period = int(check_period)
 
 
-# May be it makes sense to create and delete it into upon sending - to prevent sudden memory leaks or
-# slack event subscriptions.
-slack_client = WebClient(token=token)
-
-
 # print(token, channel, space_limit)
 
 def send_alarm(space_left):
     msg = f'Only {space_left:.2f}GB left!'
     print(msg)
     if not os.environ.get('DRYRUN'):
+        slack_client = WebClient(token=token)
         slack_client.chat_postMessage(channel=slack_channel, text=msg)
 
 
