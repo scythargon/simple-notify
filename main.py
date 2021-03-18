@@ -2,10 +2,15 @@
 import os
 import sys
 import time
+import logging
 
 import psutil
 import schedule
 from slack_sdk import WebClient
+
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger('simple-notify')
 
 # TODO: add a sane run arguments help and a corresponding library.
 
@@ -61,6 +66,8 @@ def check_hdd():
     # print(free_gb)
     if free_gb < space_limit:
         send_alarm(free_gb)
+    else:
+        logger.info(f'{free_gb:.2f}GB are free so far.')
 
 # Create a schedule.
 
