@@ -45,6 +45,11 @@ if period_units not in available_values:
     print(f"PERIOD_UNITS should be one of {available_values}.")
     sys.exit(1)
 
+instance_id = os.environ.get("INSTANCE_ID")
+if not instance_id:
+    print("Please set INSTANCE_ID env variable.")
+    sys.exit(1)
+
 # TODO: Add conversion error handling here.
 space_limit = int(space_limit)
 check_period = int(check_period)
@@ -53,8 +58,8 @@ check_period = int(check_period)
 # print(token, channel, space_limit)
 
 def send_alarm(space_left):
-    msg = f'Only {space_left:.2f}GB left!'
-    print(msg)
+    msg = f'Only {space_left:.2f}GB left on {instance_id}!'
+    logger.info(msg)
     if not os.environ.get('DRYRUN'):
         slack_client = WebClient(token=token)
         slack_client.chat_postMessage(channel=slack_channel, text=msg)
@@ -65,7 +70,7 @@ def check_hdd():
     free_gb = hdd.free / (2**30)
     # print(free_gb)
     if free_gb < space_limit:
-        send_alarm(free_gb)
+            send_alarm(free_gb)
     else:
         logger.info(f'{free_gb:.2f}GB are free so far.')
 

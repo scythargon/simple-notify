@@ -8,13 +8,14 @@ Run options:
 SPACE_LIMIT - int (GB)
 PERIOD_UNITS - str (seconds/minutes/hours/days)
 CHECK_PERIOD - int
+INSTANCE_ID - str - instance/server identifier to distinguish it in Slack reports
 DRYRUN - if set - skip slack credentials check and don't really
     send out anything, just print to stdout.
 ```
 
 ### Run example:
 
-`docker run -e SLACK_BOT_TOKEN=... -e SLACK_CHANNEL=... -e SPACE_LIMIT=... -e CHECK_PERIOD=... -e PERIOD_UNITS=... -e DRYRUN=true scythargon/simple-notify`
+`docker run --restart=unless-stopped -e SLACK_BOT_TOKEN=... -e SLACK_CHANNEL=... -e SPACE_LIMIT=... -e CHECK_PERIOD=... -e PERIOD_UNITS=... -e INSTANCE_ID=... -e DRYRUN=true scythargon/simple-notify`
 
 ### Run locally after git clone:
 (install python requirements)
